@@ -1,0 +1,1 @@
+Feature: As a hangman player, I want the game to handle bad input (like numbers, symbols, and letters I’ve previously guessed) gracefully and with an appropriate error message so that I am not punished unduly for mistakes

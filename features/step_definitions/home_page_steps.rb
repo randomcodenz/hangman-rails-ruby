@@ -1,4 +1,4 @@
-When(/^I am on the homepage$/) do
+When(/^I visit the homepage$/) do
   visit "/"
 end
 

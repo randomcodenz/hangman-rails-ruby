@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the GamesHelper. For example:
-#
-# describe GamesHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
-RSpec.describe GamesHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe GamesHelper do
+  describe '#render_masked_word' do
+    let(:word) { 'Powershop' }
+
+    context "when no letters are guessed" do
+      let(:game) { Game.new( { :word => word, :initial_lives => 5} ) }
+
+      it 'renders all of the nils as underscores' do
+        expect(helper.render_masked_word(game)).to eq word.chars.map { '_' }.join(' ')
+      end
+    end
+  end
 end

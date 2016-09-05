@@ -1,3 +1,11 @@
 <p>
-  <%= render_masked_word @game %> 
+  The word looks like: <span id='masked_word'><%= render_masked_word @game %></span>
 </p>
+<%= form_for :guess, url: guesses_path, html: { :id => 'guess' } do |f| %>
+  <p>
+    <%= f.label :guess %>: <%= f.text_field :guess %>
+  </p>
+  <p>
+      <%= f.submit %>
+  </p>
+<% end %>

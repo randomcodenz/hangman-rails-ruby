@@ -1,8 +1,8 @@
 Given(/^I have started a new game$/) do
-  visit root_path
-  click_button("New Game")
+  Game.create( { :word => 'xyzzy', :initial_lives => 5 } )
+  visit(game_path(Game.last))
 end
 
 Then(/^The masked word should be displayed$/) do
-  expect(page).to have_content('_ _ _ _ _ _ _ _ _')
+  expect(find('span#masked_word').text).to eq '_ _ _ _ _'
 end

@@ -1,11 +1,24 @@
+<% unless flash[:guess_outcome].nil? %>
+  <p id='guess_result'>
+    <% if flash[:guess_outcome] == 'correct' %>
+      Correct! The word contains '<%= flash[:guess_attempt] %>'
+    <% elsif flash[:guess_outcome] == 'incorrect' %>
+      Incorrect! The word does not contain '<%= flash[:guess_attempt] %>'
+    <% elsif flash[:guess_outcome] == 'already_tried' %>
+      You have already tried '<%= flash[:guess_attempt] %>'
+    <% else %>
+      Oh no! Something has gone wrong - an unknown guess outcome (<%= flash[:guess_outcome] %>) was found.
+    <% end %>
+  </p>
+<% end %>
 <p>
   The word looks like: <span id='masked_word'><%= render_masked_word @game %></span>
 </p>
-<%= form_for :guess, url: guesses_path, html: { :id => 'guess' } do |f| %>
+<%= form_for [@game, @game.guesses.build], html: { :id => 'guess' } do |f| %>
   <p>
-    <%= f.label :guess %>: <%= f.text_field :guess %>
+    <%= f.label :attempt %>: <%= f.text_field :attempt %>
   </p>
   <p>
-      <%= f.submit %>
+    <%= f.submit %>
   </p>
 <% end %>

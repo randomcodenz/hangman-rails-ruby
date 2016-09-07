@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe GamesHelper do
+describe GamesHelper, type: :helper do
   describe '#render_masked_word' do
     let(:word) { 'Powershop' }
 

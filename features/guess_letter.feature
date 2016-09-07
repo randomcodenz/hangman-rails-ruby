@@ -8,5 +8,11 @@ Feature: Guess a letter
     Then I am told the letter was in the word
 
   Scenario: Guessing a letter that is not in the word
+    Given I have started a game
+    When I guess a letter that is not in the word
+    Then I am told the letter was not in the word
 
   Scenario: Guessing a letter that has already been guessed
+    Given I have started a game
+    When I guess a letter that I have already attempted
+    Then I am told I have already tried that letter

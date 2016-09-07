@@ -1,13 +1,23 @@
-<% unless flash[:guess_outcome].nil? %>
+<% unless flash[:error].nil? %>
+  <ul id='errors'>
+  <% flash[:error].each do |field,errors| %>
+    <% errors.each do |errorMessage| %>
+      <li><%= errorMessage %></li>
+    <% end %>
+  <% end %>
+  </ul>
+<% end %>
+<% unless flash[:guess_attempt].nil? %>
+  <p id='guess_attempt'>
+    You guessed '<%= flash[:guess_attempt] %>'
+  </p>
+<% end %>
+<% unless flash[:guess_correct].nil? %>
   <p id='guess_result'>
-    <% if flash[:guess_outcome] == 'correct' %>
-      Correct! The word contains '<%= flash[:guess_attempt] %>'
-    <% elsif flash[:guess_outcome] == 'incorrect' %>
-      Incorrect! The word does not contain '<%= flash[:guess_attempt] %>'
-    <% elsif flash[:guess_outcome] == 'already_tried' %>
-      You have already tried '<%= flash[:guess_attempt] %>'
+    <% if flash[:guess_correct] %>
+      Your guess was correct! The word contains '<%= flash[:guess_attempt] %>'
     <% else %>
-      Oh no! Something has gone wrong - an unknown guess outcome (<%= flash[:guess_outcome] %>) was found.
+      Your guess was incorrect! The word does not contain '<%= flash[:guess_attempt] %>'
     <% end %>
   </p>
 <% end %>

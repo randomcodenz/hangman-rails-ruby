@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160905032909) do
+ActiveRecord::Schema.define(version: 20160907203138) do
 
   create_table "games", force: :cascade do |t|
     t.string   "word",          null: false
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20160905032909) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "guesses", ["attempt"], name: "index_guesses_on_attempt", unique: true
   add_index "guesses", ["game_id"], name: "index_guesses_on_game_id"
 
 end

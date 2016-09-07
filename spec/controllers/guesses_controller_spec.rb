@@ -16,10 +16,7 @@ describe GuessesController, type: :controller do
       expect(response).to redirect_to(game)
     end
 
-    it 'passes guess_attempt to show via flash' do
-      post :create, params
-      expect(flash[:guess_attempt]).to eq guess_attempt
-    end
+    #TODO: Test strong params?
 
     context 'when the guess has not been attempted' do
       let(:guess_attempt) { 'z' }
@@ -33,19 +30,21 @@ describe GuessesController, type: :controller do
       context 'and the guess is correct' do
         let(:guess_attempt) { 'y' }
 
-        it 'passes a guess outcome of correct to show via flash' do
-          post :create, params
-          expect(flash[:guess_outcome]).to be :correct
-        end
+        before { post :create, params }
+
+        it { should set_flash[:guess_correct].to(true) }
+
+        it { should set_flash[:guess_attempt].to(guess_attempt) }
       end
 
       context 'when the guess is incorrect' do
         let(:guess_attempt) { 'w' }
 
-        it 'passes a guess outcome of incorrect to show via flash' do
-          post :create, params
-          expect(flash[:guess_outcome]).to be :incorrect
-        end
+        before { post :create, params }
+
+        it { should set_flash[:guess_correct].to(false) }
+
+        it { should set_flash[:guess_attempt].to(guess_attempt) }
       end
     end
 
@@ -60,9 +59,14 @@ describe GuessesController, type: :controller do
         end.not_to change(Guess, :count)
       end
 
-      it 'passes a guess outcome of already tried to show via flash' do
+      it 'passes the error to show via flash' do
         post :create, params
-        expect(flash[:guess_outcome]).to be :already_tried
+        expect(flash[:error]).to eq( { :attempt => ['That guess has already been tried'] } )
+      end
+
+      it 'passes the guess attempt to show via flash' do
+        post :create, params
+        expect(flash[:guess_attempt]).to eq guess_attempt
       end
     end
   end

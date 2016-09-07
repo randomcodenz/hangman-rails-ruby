@@ -48,18 +48,4 @@ describe Game, type: :model do
       end
     end
   end
-
-  describe '#already_tried?' do
-    subject(:game) { Game.new( { :word => 'xyzzy', :initial_lives => 5 } ) }
-
-    before { game.guesses.new( { :attempt => 'x' } ) }
-
-    it 'is true when guesses contains the attempt' do
-      expect(game.already_tried?('x')).to be true
-    end
-
-    it 'is false when guesses does not contain the attempt' do
-      expect(game.already_tried?('y')).to be false
-    end
-  end
 end

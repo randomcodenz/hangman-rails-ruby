@@ -1,8 +1,3 @@
-Given(/^I have started a game$/) do
-  Game.create( { :word => 'xyzzy', :initial_lives => 5 } )
-  visit(game_path(Game.last))
-end
-
 When(/^I guess a letter that is in the word$/) do
   within('form#guess') do
     fill_in('Attempt', :with => 'x')
@@ -39,8 +34,4 @@ end
 
 Then(/^I am told I have already tried that letter$/) do
   expect(find('ul#errors')).to have_content("That guess has already been tried")
-end
-
-Then(/^The guess result is not shown$/) do
-  expect(page).not_to have_css('p#guess_result')
 end

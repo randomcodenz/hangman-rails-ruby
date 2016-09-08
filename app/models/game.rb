@@ -7,7 +7,8 @@ class Game < ActiveRecord::Base
   validates_associated :guesses
 
   def get_masked_word
-    word.chars.map { nil }
+    guess_attempts = guesses.collect(&:attempt).join
+    word.chars.map { |char| guess_attempts.include?(char.downcase) ? char : nil }
   end
 
   def is_correct_guess?(guess)

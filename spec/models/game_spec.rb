@@ -115,4 +115,43 @@ describe Game, type: :model do
       end.not_to change { game.calculate_lives_remaining }
     end
   end
+
+  describe '#incorrect_guesses' do
+    subject(:game) { Game.new(:word => 'xyzzy', :initial_lives => 5) }
+
+    it 'when no guesses have been made incorrect guesses is empty' do
+      expect(game.incorrect_guesses).to be_empty
+    end
+
+    it 'a correct guess is not included' do
+      game.guesses.new(:attempt => 'x')
+      expect(game.incorrect_guesses).to be_empty
+    end
+
+    it 'an incorrect guess is included' do
+      game.guesses.new(:attempt => 'w')
+      expect(game.incorrect_guesses).to contain_exactly('w')
+    end
+
+    it 'an invalid guess is not included' do
+      game.guesses.new(:attempt => '?')
+      expect(game.incorrect_guesses).to be_empty
+    end
+
+    it 'a duplicate correct guess is not included' do
+      game.guesses.new(:attempt => 'x')
+      # Unique validations suck - only work on saved data so we have to save here
+      game.save
+      game.guesses.new(:attempt => 'x')
+      expect(game.incorrect_guesses).to be_empty
+    end
+
+    it 'a duplicate incorrect guess is included once' do
+      game.guesses.new(:attempt => 'w')
+      # Unique validations suck - only work on saved data so we have to save here
+      game.save
+      game.guesses.new(:attempt => 'w')
+      expect(game.incorrect_guesses).to contain_exactly('w')
+    end
+  end
 end

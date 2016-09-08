@@ -25,4 +25,4 @@ Feature: Show previous guesses
   Scenario: Duplicate incorrect guess is not shown
     Given I have started a game with the word "xyzzy"
     When I guess "w" twice
-    Then "w" only appears once in the set of incorrect guesses 
+    Then "w" only appears once in the set of incorrect guesses

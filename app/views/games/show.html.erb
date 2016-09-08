@@ -21,6 +21,11 @@
     <% end %>
   </p>
 <% end %>
+<% unless @game.incorrect_guesses.empty? %>
+  <p>
+    Your previous incorrect guesses: <span id='incorrect_guesses'><%= @game.incorrect_guesses.to_sentence %></span>
+  </p>
+<% end %>
 <p>
   The word looks like: <span id='masked_word'><%= render_masked_word @game %></span>
 </p>

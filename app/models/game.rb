@@ -6,9 +6,13 @@ class Game < ActiveRecord::Base
     numericality: { only_integer: true, greater_than: 0 }
   validates_associated :guesses
 
-  def calculate_lives_remaining
-    incorrect_guesses = guesses.select(&:valid?)
+  def incorrect_guesses
+    guesses.select(&:valid?)
       .reject { |guess| is_correct_guess?(guess) }
+      .collect(&:attempt)
+  end
+
+  def calculate_lives_remaining
     initial_lives - incorrect_guesses.length
   end
 

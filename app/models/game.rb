@@ -6,6 +6,12 @@ class Game < ActiveRecord::Base
     numericality: { only_integer: true, greater_than: 0 }
   validates_associated :guesses
 
+  def calculate_lives_remaining
+    incorrect_guesses = guesses.select(&:valid?)
+      .reject { |guess| is_correct_guess?(guess) }
+    initial_lives - incorrect_guesses.length
+  end
+
   def get_masked_word
     guess_attempts = guesses.collect(&:attempt).join
     word.chars.map { |char| guess_attempts.include?(char.downcase) ? char : nil }

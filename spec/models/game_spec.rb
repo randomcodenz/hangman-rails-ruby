@@ -84,4 +84,35 @@ describe Game, type: :model do
       end
     end
   end
+
+  describe '#calculate_lives_remaining' do
+    let(:initial_lives) { 5 }
+    subject(:game) { Game.new(:word => 'xyzzy', :initial_lives => initial_lives) }
+
+    it 'when no guesses have been made lives remaining is the same as initial lives' do
+      expect(game.calculate_lives_remaining).to eq initial_lives
+    end
+
+    it 'when a correct guesses is made lives remaining is not changed' do
+      expect { game.guesses.new(:attempt => 'x') }
+        .not_to change { game.calculate_lives_remaining }
+    end
+
+    it 'when an incorrect guess is made lives remaining is decremented' do
+      expect { game.guesses.new(:attempt => 'w') }
+        .to change { game.calculate_lives_remaining }.from(5).to(4)
+    end
+
+    it 'when an invalid guess is made lives remaining is unchanged' do
+      expect { game.guesses.new(:attempt => '?') }
+        .not_to change { game.calculate_lives_remaining }
+    end
+
+    it 'when a duplicate guess is made lives remaining is unchanged' do
+      expect do
+        game.guesses.new(:attempt => 'x')
+        game.guesses.new(:attempt => 'x')
+      end.not_to change { game.calculate_lives_remaining }
+    end
+  end
 end

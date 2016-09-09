@@ -22,6 +22,10 @@ class Game < ActiveRecord::Base
     word.chars.map { |char| guess_attempts.include?(char.downcase) ? char : nil }
   end
 
+  def game_won?
+    get_masked_word.none?(&:nil?) && !game_lost?
+  end
+
   def game_lost?
     calculate_lives_remaining <= 0
   end

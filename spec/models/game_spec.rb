@@ -159,12 +159,40 @@ describe Game, type: :model do
     subject(:game) { Game.new(:word => 'xyzzy', :initial_lives => 1) }
 
     it 'is false if lives remaining > 0' do
-      expect(game.game_lost?).to eq false
+      expect(game.game_lost?).to be false
     end
 
     it 'is true if lives remaining is 0' do
       game.guesses.new(:attempt => 'w')
-      expect(game.game_lost?).to eq true
+      expect(game.game_lost?).to be true
+    end
+  end
+
+  describe '#game_won?' do
+    subject(:game) { Game.new(:word => 'xyzzy', :initial_lives => 1) }
+
+    it 'is false if none of the letter are guessed' do
+      expect(game.game_won?).to be false
+    end
+
+    it 'is false if some of the letter are not guessed' do
+      game.guesses.new(:attempt => 'z')
+      expect(game.game_won?).to be false
+    end
+
+    it 'is true if all letters are guessed and lives remaining > 0' do
+      game.guesses.new(:attempt => 'x')
+      game.guesses.new(:attempt => 'y')
+      game.guesses.new(:attempt => 'z')
+      expect(game.game_won?).to be true
+    end
+
+    it 'is false if all letters are guessed and lives remaining is 0' do
+      game.guesses.new(:attempt => 'w')
+      game.guesses.new(:attempt => 'x')
+      game.guesses.new(:attempt => 'y')
+      game.guesses.new(:attempt => 'z')
+      expect(game.game_won?).to be false
     end
 
   end

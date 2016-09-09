@@ -26,14 +26,20 @@
     Your previous incorrect guesses: <span id='incorrect_guesses'><%= @game.incorrect_guesses.to_sentence %></span>
   </p>
 <% end %>
-<p>
-  The word looks like: <span id='masked_word'><%= render_masked_word @game %></span>
-</p>
 <% if @game.game_lost? %>
   <p id='game_lost'>
-    Game over! Unfortunately you have run out of lives and been hung :(
+    Game over! Unfortunately you have run out of lives and been hung :(<br/>
+    The word was <%= @game.word %>
+  </p>
+<% elsif @game.game_won? %>
+  <p id='game_won'>
+    Game over! You have guessed the word and avoided the hangman's noose :)
+    The word was <%= @game.word %>
   </p>
 <% else %>
+  <p>
+    The word looks like: <span id='masked_word'><%= render_masked_word @game %></span>
+  </p>
   <p>
     You have <span id='lives_remaining'><%= @game.calculate_lives_remaining %></span> lives remaining
   </p>

@@ -69,5 +69,15 @@ describe GuessesController, type: :controller do
         expect(flash[:guess_attempt]).to eq guess_attempt
       end
     end
+
+    context 'when guessing the entire word correctly' do
+      let(:guess_attempt) { 'xyzzy' }
+
+      before { post :create, params }
+
+      it { should set_flash[:guess_correct].to(true) }
+
+      it { should set_flash[:guess_attempt].to(guess_attempt) }
+    end
   end
 end

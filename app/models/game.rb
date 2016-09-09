@@ -5,6 +5,7 @@ class Game < ActiveRecord::Base
     presence: true,
     numericality: { only_integer: true, greater_than: 0 }
   validates_associated :guesses
+  # TODO: Add validation to game or guess to stop adding guesses when lives == 0?
 
   def incorrect_guesses
     guesses.select(&:valid?)
@@ -19,6 +20,10 @@ class Game < ActiveRecord::Base
   def get_masked_word
     guess_attempts = guesses.collect(&:attempt).join
     word.chars.map { |char| guess_attempts.include?(char.downcase) ? char : nil }
+  end
+
+  def game_lost?
+    calculate_lives_remaining <= 0
   end
 
   def is_correct_guess?(guess)

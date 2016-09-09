@@ -154,4 +154,18 @@ describe Game, type: :model do
       expect(game.incorrect_guesses).to contain_exactly('w')
     end
   end
+
+  describe '#game_lost?' do
+    subject(:game) { Game.new(:word => 'xyzzy', :initial_lives => 1) }
+
+    it 'is false if lives remaining > 0' do
+      expect(game.game_lost?).to eq false
+    end
+
+    it 'is true if lives remaining is 0' do
+      game.guesses.new(:attempt => 'w')
+      expect(game.game_lost?).to eq true
+    end
+
+  end
 end

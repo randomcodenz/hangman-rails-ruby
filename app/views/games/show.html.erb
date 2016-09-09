@@ -29,14 +29,20 @@
 <p>
   The word looks like: <span id='masked_word'><%= render_masked_word @game %></span>
 </p>
-<p>
-  You have <span id='lives_remaining'><%= @game.calculate_lives_remaining %></span> lives remaining
-</p>
-<%= form_for [@game, @game.guesses.build], html: { :id => 'guess' } do |f| %>
-  <p>
-    <%= f.label :attempt %>: <%= f.text_field :attempt %>
+<% if @game.game_lost? %>
+  <p id='game_lost'>
+    Game over! Unfortunately you have run out of lives and been hung :(
   </p>
+<% else %>
   <p>
-    <%= f.submit %>
+    You have <span id='lives_remaining'><%= @game.calculate_lives_remaining %></span> lives remaining
   </p>
+  <%= form_for [@game, @game.guesses.build], html: { :id => 'guess' } do |f| %>
+    <p>
+      <%= f.label :attempt %>: <%= f.text_field :attempt %>
+    </p>
+    <p>
+      <%= f.submit %>
+    </p>
+  <% end %>
 <% end %>

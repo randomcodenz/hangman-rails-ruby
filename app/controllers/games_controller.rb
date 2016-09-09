@@ -5,7 +5,7 @@ class GamesController < ApplicationController
   # index, show, new, edit, create, update, destroy
 
   def show
-    @game = Game.find(params[:id])
+    @game = Game.includes(:guesses).find(params[:id])
   end
 
   def create

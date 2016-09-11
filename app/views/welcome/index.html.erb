@@ -1,5 +1,3 @@
 <h1>Welcome to Hangman!</h1>
 
-<%= form_for :game, url: games_path do |f| %>
-  <p><%= f.submit "New Game" %></p>
-<% end %>
+<%= render 'new_game_form' %>

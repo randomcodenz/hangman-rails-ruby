@@ -194,6 +194,28 @@ describe Game, type: :model do
       game.guesses.new(:attempt => 'z')
       expect(game.game_won?).to be false
     end
+  end
 
+  describe '#game_over?' do
+    subject(:game) { Game.new(:word => 'xyzzy', :initial_lives => 1) }
+
+    it 'is true if game_lost? is true' do
+      game.guesses.new(:attempt => 'w')
+      # TODO: Assert that game_lost? is true?
+      expect(game.game_over?).to be true
+    end
+
+    it 'is true if game_won? is true' do
+      game.guesses.new(:attempt => 'x')
+      game.guesses.new(:attempt => 'y')
+      game.guesses.new(:attempt => 'z')
+      # TODO: Assert that game_won? is true?
+      expect(game.game_over?).to be true
+    end
+
+    it 'is false if game_lost? and game_won? are false' do
+      # TODO: Assert that game_won? and game_lost? are false?
+      expect(game.game_over?).to be false
+    end
   end
 end

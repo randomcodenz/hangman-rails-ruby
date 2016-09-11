@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20160907203138) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "guesses", ["attempt"], name: "index_guesses_on_attempt", unique: true
+  add_index "guesses", ["game_id", "attempt"], name: "index_guesses_on_game_id_and_attempt", unique: true
   add_index "guesses", ["game_id"], name: "index_guesses_on_game_id"
 
 end

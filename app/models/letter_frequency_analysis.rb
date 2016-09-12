@@ -4,6 +4,13 @@ class LetterFrequencyAnalysis
       letters_ordered_by_frequency(relative_letter_frequency)
     end
 
+    def letter_ranking_map
+      letters_by_frequency
+        .each_with_index
+        .map { |value, index| [value, index + 1] }
+        .to_h
+    end
+
     def following_letters_by_frequency(letter)
       return [] unless letter =~ /^[A-Za-z]{1}$/
 
@@ -13,7 +20,7 @@ class LetterFrequencyAnalysis
 
     def preceeding_letters_by_frequency(letter)
       return [] unless letter =~ /^[A-Za-z]{1}$/
-      
+
       letters_ordered_by_frequency(preceeding_letter_frequency(letter))
     end
 

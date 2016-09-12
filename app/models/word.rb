@@ -6,8 +6,15 @@ class Word < ActiveRecord::Base
     presence: true,
     numericality: { only_integer: true, greater_than: 0 }
 
+  before_validation :calculate_difficulty, if: :missing_difficulty?
+
+  private
+
+  def missing_difficulty?
+    difficulty.nil?
+  end
+
   def calculate_difficulty
-    # Loop through single letters in order of frequency until we get a match
-    # Loop through bigrams trying letters in order of frequency
+    # TODO: Use GuessBot.calculate_guesses(word) as a proxy for difficulty
   end
 end

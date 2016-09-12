@@ -6,14 +6,12 @@ describe Word, type: :model do
 
     it { is_expected.to validate_presence_of(:word) }
 
-    it { is_expected.to validate_presence_of(:difficulty) }
+    # TODO: Can no longer test this because of the before_validation hook
+    # it { is_expected.to validate_presence_of(:difficulty) }
 
     it { is_expected.to validate_numericality_of(:difficulty).only_integer.is_greater_than(0) }
 
     it { is_expected.to validate_uniqueness_of(:word).case_insensitive }
   end
 
-  describe '#calculate_difficulty' do
-    it 'difficulty of single letter is equal to relative frequency in english language'
-  end
 end

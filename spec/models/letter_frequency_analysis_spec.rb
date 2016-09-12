@@ -11,6 +11,16 @@ describe LetterFrequencyAnalysis do
     end
   end
 
+  describe '#letter_ranking_map' do
+    it 'the most frequent letter has rank 1' do
+      expect(LetterFrequencyAnalysis.letter_ranking_map['e']).to eq 1
+    end
+
+    it 'the least frequent letter has rank 26' do
+      expect(LetterFrequencyAnalysis.letter_ranking_map['z']).to eq 26
+    end
+  end
+
   describe '#following_letters_by_frequency' do
     it 'returns the most frequent letter that follows first' do
       expect(LetterFrequencyAnalysis.following_letters_by_frequency('e').first).to eq 'r'

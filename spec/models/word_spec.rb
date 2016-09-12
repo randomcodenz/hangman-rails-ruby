@@ -12,4 +12,8 @@ describe Word, type: :model do
 
     it { is_expected.to validate_uniqueness_of(:word).case_insensitive }
   end
+
+  describe '#calculate_difficulty' do
+    it 'difficulty of single letter is equal to relative frequency in english language'
+  end
 end

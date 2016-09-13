@@ -7,5 +7,5 @@ When(/^I view the game$/) do
 end
 
 Then(/^The number of lives I have are displayed$/) do
-  expect(find('span#lives_remaining').text).to eq '7'
+  expect(find('span#lives-remaining').text).to eq '7'
 end

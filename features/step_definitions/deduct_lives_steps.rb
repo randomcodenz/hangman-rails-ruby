@@ -11,7 +11,7 @@ When(/^I make an incorrect guess \("([^"]*)"\)$/) do |guess|
 end
 
 Then(/^I should end up with (\d+) lives$/) do |lives_remaining|
-  expect(find('span#lives_remaining').text).to eq lives_remaining.to_s
+  expect(find('span#lives-remaining').text).to eq lives_remaining.to_s
 end
 
 When(/^I make an invalid guess \("([^"]*)"\)$/) do |guess|
@@ -22,7 +22,7 @@ When(/^I make an invalid guess \("([^"]*)"\)$/) do |guess|
 end
 
 Then(/^I should still have (\d+) lives$/) do |lives_remaining|
-  expect(find('span#lives_remaining').text).to eq lives_remaining.to_s
+  expect(find('span#lives-remaining').text).to eq lives_remaining.to_s
 end
 
 When(/^I make a valid guess \("([^"]*)"\)$/) do |guess|

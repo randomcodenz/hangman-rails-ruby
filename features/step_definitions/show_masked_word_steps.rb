@@ -4,5 +4,5 @@ Given(/^I have started a new game$/) do
 end
 
 Then(/^The masked word should be displayed$/) do
-  expect(find('span#masked_word').text).to eq '_ _ _ _ _'
+  expect(find('span#masked-word').text).to eq '_ _ _ _ _'
 end

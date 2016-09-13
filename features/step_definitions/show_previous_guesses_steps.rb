@@ -6,7 +6,7 @@ When(/^I incorrectly guess "([^"]*)"$/) do |guess|
 end
 
 Then(/^"([^"]*)" is shown in the set of incorrect guesses$/) do |guess|
-  expect(find('span#incorrect_guesses').text).to eq "#{guess}"
+  expect(find('span#incorrect-guesses').text).to eq "#{guess}"
 end
 
 When(/^I correctly guess "([^"]*)"$/) do |guess|
@@ -17,7 +17,7 @@ When(/^I correctly guess "([^"]*)"$/) do |guess|
 end
 
 Then(/^"([^"]*)" is not shown in the set of incorrect guesses$/) do |guess|
-  expect(page).not_to have_css('span#incorrect_guesses')
+  expect(page).not_to have_css('span#incorrect-guesses')
 end
 
 When(/^I invalidly guess "([^"]*)"$/) do |guess|
@@ -39,5 +39,5 @@ When(/^I guess "([^"]*)" twice$/) do |guess|
 end
 
 Then(/^"([^"]*)" only appears once in the set of incorrect guesses$/) do |guess|
-  expect(find('span#incorrect_guesses').text).to eq "#{guess}"
+  expect(find('span#incorrect-guesses').text).to eq "#{guess}"
 end

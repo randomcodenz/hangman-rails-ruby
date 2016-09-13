@@ -1,10 +1,7 @@
 class Game < ActiveRecord::Base
-  # REVIEW: extended has many with :dependent => :destroy
-  has_many :guesses
+  has_many :guesses, :dependent => :destroy
   validates_presence_of :word
   validates :initial_lives,
-    #REVIEW: Presence is not required as numericality will ensure presence unless allow_blank
-    presence: true,
     numericality: { only_integer: true, greater_than: 0 }
   validates_associated :guesses
   # TODO: Add validation to game or guess to stop adding guesses when lives == 0?
@@ -19,9 +16,8 @@ class Game < ActiveRecord::Base
     initial_lives - incorrect_guesses.length
   end
 
-  # REVIEW: Should be masked_letters rather than get_masked_word as this is returning an array - so plural
   # REVIEW: Could return an object that knows how to render itself that the view can exploit
-  def get_masked_word
+  def masked_letters
     guess_attempts = guesses.collect(&:attempt).join
     word.chars.map { |char| guess_attempts.include?(char.downcase) ? char : nil }
   end
@@ -31,9 +27,7 @@ class Game < ActiveRecord::Base
   end
 
   def game_won?
-    # REVIEW: rewrite as get_masked_word.all?(&:present?)
-    # REVIEW: order of conditionals for short-circuiting
-    get_masked_word.none?(&:nil?) && !game_lost?
+    !game_lost? && masked_letters.all?(&:present?)
   end
 
   def game_lost?

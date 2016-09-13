@@ -9,24 +9,35 @@ describe Game, type: :model do
     game.guesses.create(:attempt => attempt)
   end
 
-  it { is_expected.to have_many(:guesses) }
+  it { is_expected.to have_many(:guesses).dependent(:destroy) }
 
   context 'when validating a game' do
     it { is_expected.to validate_presence_of(:word) }
 
-    it { is_expected.to validate_presence_of(:initial_lives) }
-
     it { is_expected.to validate_numericality_of(:initial_lives).only_integer.is_greater_than(0) }
 
-    it 'is expected to validate all associated guesses'
-    #TODO: There are no shoulda matchers for doing this
+    context 'all associated guesses are validated' do
+      subject(:game) { create_game( 'xyzzy', 5) }
+
+      it 'game.valid? is true if all guesses are valid' do
+        make_guess(game, 'x')
+        expect(game.valid?).to be true
+        expect(game.guesses.all?(&:valid?)).to be true
+      end
+
+      it 'game.valid? is false if any guesses are invalid' do
+        make_guess(game, '!')
+        expect(game.valid?).to be false
+        expect(game.guesses.all?(&:valid?)).to be false
+      end
+    end
   end
 
-  describe '#get_masked_word' do
+  describe '#masked_letters' do
     let(:word) { 'Powershop' }
     let(:game) { create_game(word, 5) }
 
-    subject(:masked_word) { game.get_masked_word }
+    subject(:masked_word) { game.masked_letters }
 
     context 'when no letters are guessed' do
       it 'returns nil for each letter in the word' do

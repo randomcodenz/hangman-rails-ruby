@@ -1,7 +1,6 @@
 module GamesHelper
   def render_masked_word(game)
-    masked_word = game.get_masked_word
-    masked_word
+    game.masked_letters
       .map { |masked_letter| render_letter(masked_letter) }
       .join(' ')
   end

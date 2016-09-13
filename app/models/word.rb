@@ -15,6 +15,6 @@ class Word < ActiveRecord::Base
   end
 
   def calculate_difficulty
-    # TODO: Use GuessBot.calculate_guesses(word) as a proxy for difficulty
+    self.difficulty = GuessBot.calculate_guesses(word).length
   end
 end

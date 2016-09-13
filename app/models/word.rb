@@ -8,6 +8,27 @@ class Word < ActiveRecord::Base
 
   before_validation :calculate_difficulty, if: :missing_difficulty?
 
+  def self.easy_difficulty(game_lives)
+    where("difficulty < ?", game_lives)
+  end
+
+  def self.medium_difficulty(game_lives)
+    min_difficulty = game_lives
+    max_difficulty = game_lives * 2
+    where("difficulty >= ? AND difficulty < ?", min_difficulty, max_difficulty)
+  end
+
+  def self.hard_difficulty(game_lives)
+    min_difficulty = game_lives * 2
+    max_difficulty = game_lives * 3
+    where("difficulty >= ? AND difficulty < ?", min_difficulty, max_difficulty)
+  end
+
+  def self.expert_difficulty(game_lives)
+    min_difficulty = game_lives * 3
+    where("difficulty >= ?", min_difficulty)
+  end
+
   private
 
   def missing_difficulty?

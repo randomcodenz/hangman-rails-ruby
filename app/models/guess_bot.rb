@@ -2,7 +2,7 @@ class GuessBot
   class << self
     def calculate_guesses(word)
       # Loop through single letters in order of frequency until we get a match
-      # Loop through bigrams trying letters in order of frequency
+      # TODO: Loop through bigrams trying letters in order of frequency
       letters_guessed = word.chars.map { |letter| [letter.downcase, false] }.to_h
       letters_guessed.default = false
 

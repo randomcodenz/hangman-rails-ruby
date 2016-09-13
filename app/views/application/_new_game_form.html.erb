@@ -1,3 +1,11 @@
 <%= form_for :game, url: games_path do |f| %>
-  <p><%= f.submit "New Game" %></p>
+  <p>
+    <ul>
+      <li><%= radio_button_tag(:game_difficulty, "easy") %> <%= label_tag(:game_difficulty_easy, "Easy") %></li>
+      <li><%= radio_button_tag(:game_difficulty, "medium", true) %> <%= label_tag(:game_difficulty_easy, "Medium") %></li>
+      <li><%= radio_button_tag(:game_difficulty, "hard") %> <%= label_tag(:game_difficulty_easy, "Hard") %></li>
+      <li><%= radio_button_tag(:game_difficulty, "expert") %> <%= label_tag(:game_difficulty_easy, "Expert") %></li>
+    </ul>
+    <%= f.submit "New Game" %>
+  </p>
 <% end %>

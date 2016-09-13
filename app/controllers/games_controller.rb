@@ -9,7 +9,6 @@ class GamesController < ApplicationController
   end
 
   def create
-    # No new method at this time as there are no parameters to pass to create a game
     @game = Game.new( { :word => DEFAULT_WORD, :initial_lives => DEFAULT_LIVES } )
     @game.save
 

@@ -9,10 +9,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    #REVIEW: Should be create! or if @game.save redirect else handle error (redirect to home page with oops)
-    @game = Game.new(:word => DEFAULT_WORD, :initial_lives => DEFAULT_LIVES)
-    @game.save
-
+    @game = Game.create!(:word => DEFAULT_WORD, :initial_lives => DEFAULT_LIVES)
     redirect_to @game
   end
 

@@ -1,9 +1,14 @@
 require 'rails_helper'
 
-#REVIEW: Extract making a guess on a game into a helper method and use create instead of new
 describe Game, type: :model do
-  # def make_guess(game, letter)
-  # end
+  def create_game(word, lives)
+    Game.create!(:word => word, :initial_lives => lives)
+  end
+
+  def make_guess(game, attempt)
+    game.guesses.create(:attempt => attempt)
+  end
+
   it { is_expected.to have_many(:guesses) }
 
   context 'when validating a game' do
@@ -19,7 +24,7 @@ describe Game, type: :model do
 
   describe '#get_masked_word' do
     let(:word) { 'Powershop' }
-    let(:game) { Game.new( { :word => word, :initial_lives => 5 } )}
+    let(:game) { create_game(word, 5) }
 
     subject(:masked_word) { game.get_masked_word }
 
@@ -30,7 +35,7 @@ describe Game, type: :model do
     end
 
     context 'when a letter that appears once is guessed' do
-      before { game.guesses.new(:attempt => 'w') }
+      before { make_guess(game, 'w') }
 
       it 'returns nil for each letter in the word not guessed' do
         expect(masked_word.values_at(0, 1, 3..8)).to all(be_nil)
@@ -42,7 +47,7 @@ describe Game, type: :model do
     end
 
     context 'when a letter that appears twice is guessed' do
-      before { game.guesses.new(:attempt => 'o') }
+      before { make_guess(game, 'o') }
 
       it 'returns nil for each letter in the word not guessed' do
         expect(masked_word.values_at(0, 2..6, 8)).to all(be_nil)
@@ -54,7 +59,7 @@ describe Game, type: :model do
     end
 
     context 'is case insensitive' do
-      before { game.guesses.new(:attempt => 'p') }
+      before { make_guess(game, 'p') }
 
       it 'returns nil for each letter in the word not guessed' do
         expect(masked_word.values_at(1..7)).to all(be_nil)
@@ -67,9 +72,9 @@ describe Game, type: :model do
   end
 
   describe '#is_correct_guess?' do
-    let(:guess) { game.guesses.new( { :attempt => guess_attempt } ) }
+    let(:guess) { make_guess(game, guess_attempt ) }
 
-    subject(:game) { Game.new( { :word => 'xyzzy', :initial_lives => 5 } ) }
+    subject(:game) { create_game('xyzzy', 5) }
 
     context 'when the guess is in the word' do
       let(:guess_attempt) { 'x' }
@@ -90,128 +95,128 @@ describe Game, type: :model do
 
   describe '#calculate_lives_remaining' do
     let(:initial_lives) { 5 }
-    subject(:game) { Game.new(:word => 'xyzzy', :initial_lives => initial_lives) }
+    subject(:game) { create_game('xyzzy', initial_lives) }
 
     it 'when no guesses have been made lives remaining is the same as initial lives' do
       expect(game.calculate_lives_remaining).to eq initial_lives
     end
 
     it 'when a correct guesses is made lives remaining is not changed' do
-      expect { game.guesses.new(:attempt => 'x') }
+      expect { make_guess(game, 'x') }
         .not_to change { game.calculate_lives_remaining }
     end
 
     it 'when an incorrect guess is made lives remaining is decremented' do
-      expect { game.guesses.new(:attempt => 'w') }
+      expect { make_guess(game, 'w') }
         .to change { game.calculate_lives_remaining }.from(5).to(4)
     end
 
     it 'when an invalid guess is made lives remaining is unchanged' do
-      expect { game.guesses.new(:attempt => '?') }
+      expect { make_guess(game, '?') }
         .not_to change { game.calculate_lives_remaining }
     end
 
     it 'when a duplicate guess is made lives remaining is unchanged' do
       expect do
-        game.guesses.new(:attempt => 'x')
-        game.guesses.new(:attempt => 'x')
+        make_guess(game, 'x')
+        make_guess(game, 'x')
       end.not_to change { game.calculate_lives_remaining }
     end
   end
 
   describe '#incorrect_guesses' do
-    subject(:game) { Game.new(:word => 'xyzzy', :initial_lives => 5) }
+    subject(:game) { create_game('xyzzy', 5) }
 
     it 'when no guesses have been made incorrect guesses is empty' do
       expect(game.incorrect_guesses).to be_empty
     end
 
     it 'a correct guess is not included' do
-      game.guesses.new(:attempt => 'x')
+      make_guess(game, 'x')
       expect(game.incorrect_guesses).to be_empty
     end
 
     it 'an incorrect guess is included' do
-      game.guesses.new(:attempt => 'w')
+      make_guess(game, 'w')
       expect(game.incorrect_guesses).to contain_exactly('w')
     end
 
     it 'an invalid guess is not included' do
-      game.guesses.new(:attempt => '?')
+      make_guess(game, '?')
       expect(game.incorrect_guesses).to be_empty
     end
 
     it 'a duplicate correct guess is not included' do
-      game.guesses.new(:attempt => 'x')
+      make_guess(game, 'x')
       # Unique validations suck - only work on saved data so we have to save here
       game.save
-      game.guesses.new(:attempt => 'x')
+      make_guess(game, 'x')
       expect(game.incorrect_guesses).to be_empty
     end
 
     it 'a duplicate incorrect guess is included once' do
-      game.guesses.new(:attempt => 'w')
+      make_guess(game, 'w')
       # Unique validations suck - only work on saved data so we have to save here
       game.save
-      game.guesses.new(:attempt => 'w')
+      make_guess(game, 'w')
       expect(game.incorrect_guesses).to contain_exactly('w')
     end
   end
 
   describe '#game_lost?' do
-    subject(:game) { Game.new(:word => 'xyzzy', :initial_lives => 1) }
+    subject(:game) { create_game('xyzzy', 1) }
 
     it 'is false if lives remaining > 0' do
       expect(game.game_lost?).to be false
     end
 
     it 'is true if lives remaining is 0' do
-      game.guesses.new(:attempt => 'w')
+      make_guess(game, 'w')
       expect(game.game_lost?).to be true
     end
   end
 
   describe '#game_won?' do
-    subject(:game) { Game.new(:word => 'xyzzy', :initial_lives => 1) }
+    subject(:game) { create_game('xyzzy', 1) }
 
     it 'is false if none of the letter are guessed' do
       expect(game.game_won?).to be false
     end
 
     it 'is false if some of the letter are not guessed' do
-      game.guesses.new(:attempt => 'z')
+      make_guess(game, 'z')
       expect(game.game_won?).to be false
     end
 
     it 'is true if all letters are guessed and lives remaining > 0' do
-      game.guesses.new(:attempt => 'x')
-      game.guesses.new(:attempt => 'y')
-      game.guesses.new(:attempt => 'z')
+      make_guess(game, 'x')
+      make_guess(game, 'y')
+      make_guess(game, 'z')
       expect(game.game_won?).to be true
     end
 
     it 'is false if all letters are guessed and lives remaining is 0' do
-      game.guesses.new(:attempt => 'w')
-      game.guesses.new(:attempt => 'x')
-      game.guesses.new(:attempt => 'y')
-      game.guesses.new(:attempt => 'z')
+      make_guess(game, 'w')
+      make_guess(game, 'x')
+      make_guess(game, 'y')
+      make_guess(game, 'z')
       expect(game.game_won?).to be false
     end
   end
 
   describe '#game_over?' do
-    subject(:game) { Game.new(:word => 'xyzzy', :initial_lives => 1) }
+    subject(:game) { create_game('xyzzy', 1) }
 
     it 'is true if game_lost? is true' do
-      game.guesses.new(:attempt => 'w')
+      make_guess(game, 'w')
       # TODO: Assert that game_lost? is true?
       expect(game.game_over?).to be true
     end
 
     it 'is true if game_won? is true' do
-      game.guesses.new(:attempt => 'x')
-      game.guesses.new(:attempt => 'y')
-      game.guesses.new(:attempt => 'z')
+      make_guess(game, 'x')
+      make_guess(game, 'y')
+      make_guess(game, 'z')
       # TODO: Assert that game_won? is true?
       expect(game.game_over?).to be true
     end

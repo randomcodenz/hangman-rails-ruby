@@ -23,8 +23,7 @@
   </p>
 <% end %>
 <!-- REVIEW: Make a helper that returns content or nil so this can be reduced to a declarative call -->
-<!-- REVIEW: if @game.incorrect_guesses.any? -->
-<% unless @game.incorrect_guesses.empty? %>
+<% if @game.incorrect_guesses.any? %>
   <p>
     Your previous incorrect guesses: <span id="incorrect-guesses"><%= @game.incorrect_guesses.to_sentence %></span>
   </p>

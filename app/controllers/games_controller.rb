@@ -9,19 +9,30 @@ class GamesController < ApplicationController
   end
 
   def create
-    @game = Game.create!(:word => DEFAULT_WORD, :initial_lives => DEFAULT_LIVES)
+    word = random_word(game_params[:difficulty], DEFAULT_LIVES)
+    @game = Game.create!(:word => word, :initial_lives => DEFAULT_LIVES)
     redirect_to @game
   end
 
   private
 
-  # def get_word(difficulty)
-  #   case difficulty
-  #   when "medium"
-  #   when "hard"
-  #   when "expert"
-  #   else
-  #     # Default to easy
-  #   end
-  # end
+  def game_params
+    params.permit(:game_difficulty)
+  end
+
+  def random_word(difficulty, initial_lives)
+    all_words =
+      case difficulty
+      when "medium"
+        Word.medium_difficulty(initial_lives)
+      when "hard"
+        Word.hard_difficulty(initial_lives)
+      when "expert"
+        Word.expert_difficulty(initial_lives)
+      else
+        # Default to easy
+        Word.easy_difficulty(initial_lives)
+      end
+      all_words.sample.word
+  end
 end

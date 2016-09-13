@@ -2,11 +2,12 @@ class GuessesController < ApplicationController
   def create
     game = Game.includes(:guesses).find(params[:game_id])
 
+    # REVIEW: Guessing a word if incorrect should be treated as one guess
     guesses = guess_attempt.chars.map { |attempt| game.guesses.new(:attempt => attempt) }
     if game.save
       flash[:guess_correct] = guesses.all? { |guess| game.is_correct_guess?(guess) }
     else
-      flash[:error] = collect_errors( guesses )
+      flash[:error] = collect_errors(guesses)
       invalid_guesses(guesses).each { |invalid_guess| game.guesses.delete(invalid_guess) }
       game.save
     end

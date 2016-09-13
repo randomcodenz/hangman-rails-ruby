@@ -1,6 +1,9 @@
 require 'rails_helper'
 
+#REVIEW: Extract making a guess on a game into a helper method and use create instead of new
 describe Game, type: :model do
+  # def make_guess(game, letter)
+  # end
   it { is_expected.to have_many(:guesses) }
 
   context 'when validating a game' do

@@ -13,6 +13,7 @@ Given(/^I am playing a game with the word "([^"]*)" and (\d+) (?:life|lives) rem
   visit game_path(Game.last)
 end
 
+#REVIEW: Extract the repeated within ... into features/support/??_helper
 Given(/^I have previously guessed "([^"]*)"$/) do |guess|
   within('form#guess') do
     fill_in('Attempt', :with => guess)

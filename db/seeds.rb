@@ -7,12 +7,11 @@ directory = File.dirname(__FILE__)
 all_words = File.open(File.join(directory, WORD_LIST)) do |dictionary|
   dictionary
     .readlines
+    .map(&:chomp)
+    .select { |word| word.length >= MIN_WORD_LENGTH }
 end
-words =
-  all_words.select { |word| word.length > MIN_WORD_LENGTH }
-    .map { |word| Word.new(:word => word.chomp) }
-    .each { |word| word.validate }
 
 Word.transaction do
-  words.each(&:save)
+  all_words
+    .each { |word| Word.create!(:word => word) }
 end

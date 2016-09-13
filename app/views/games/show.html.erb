@@ -1,8 +1,10 @@
+<!-- REVIEW: Extract error rendering into a layout -->
+<!-- REVIEW: double quotes for html and hyphens for classes -->
 <% unless flash[:error].nil? %>
   <ul id='errors'>
-  <% flash[:error].each do |field,errors| %>
-    <% errors.each do |errorMessage| %>
-      <li><%= errorMessage %></li>
+  <% flash[:error].each do |field, errors| %>
+    <% errors.each do |error_message| %>
+      <li><%= error_message %></li>
     <% end %>
   <% end %>
   </ul>
@@ -21,12 +23,15 @@
     <% end %>
   </p>
 <% end %>
+<!-- REVIEW: Make a helper that returns content or nil so this can be reduced to a declarative call -->
+<!-- REVIEW: if @game.incorrect_guesses.any? -->
 <% unless @game.incorrect_guesses.empty? %>
   <p>
     Your previous incorrect guesses: <span id='incorrect_guesses'><%= @game.incorrect_guesses.to_sentence %></span>
   </p>
 <% end %>
 <% if @game.game_over? %>
+<!-- REVIEW: Extract into game_over partial to increase readability -->
   <% if @game.game_lost? %>
     <p id='game_lost'>
       Game over! Unfortunately you have run out of lives and been hung :(<br/>

@@ -1,8 +1,3 @@
-Given(/^I have started a game with the word "([^"]*)" and (\d+) lives$/) do |word, initial_lives|
-  Game.create(:word => word, :initial_lives => initial_lives)
-  visit game_path(Game.last)
-end
-
 When(/^I make an incorrect guess \("([^"]*)"\)$/) do |guess|
   within('form#guess') do
     fill_in('Attempt', :with => guess)

@@ -1,7 +1,3 @@
-Given(/^I have started a game with 7 lives$/) do
-  Game.create( { :word => 'xyzzy', :initial_lives => 7 } )
-end
-
 When(/^I view the game$/) do
   visit(game_path(Game.last))
 end

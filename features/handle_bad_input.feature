@@ -11,10 +11,10 @@ Feature: Handle bad input
     Given I have started a game with the word "xyzzy"
     When I guess the number "3"
     Then I am told "3" is not a valid guess attempt
-    Then The guess result is not shown
+    Then I cannot see the guess result
 
   Scenario: Guessing a symbol
     Given I have started a game with the word "xyzzy"
     When I guess the symbol "$"
     Then I am told "$" is not a valid guess attempt
-    Then The guess result is not shown
+    Then I cannot see the guess result

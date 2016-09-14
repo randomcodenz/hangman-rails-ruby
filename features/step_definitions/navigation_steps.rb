@@ -2,8 +2,12 @@ Given(/^I am on the homepage$/) do
   visit root_path
 end
 
-Then(/^I should see a "([^"]*)" button$/) do |button_text|
-  expect(page).to have_button(button_text)
+When(/^I visit the homepage$/) do
+  visit root_path
+end
+
+When(/^I view the game$/) do
+  visit(game_path(Game.last))
 end
 
 When(/^I start a new game$/) do

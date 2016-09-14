@@ -6,4 +6,4 @@ Feature: Show masked word
 
   Scenario: The masked word is displayed on the page
     Given I have started a game with the word "xyzzy"
-    Then The masked word should be displayed
+    Then I can see the masked word

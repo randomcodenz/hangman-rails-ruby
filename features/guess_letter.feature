@@ -6,19 +6,20 @@ Feature: Guess a letter
 # REVIEW: Line 9/15/21 Then I should see the guess attempt - keep the subject consistent
   Scenario: Guessing a letter that is in the word
     Given I have started a game with the word "xyzzy"
-    When I guess a letter that is in the word
+    When I guess the letter "x"
     Then The guess attempt is shown
     Then I am told the letter was in the word
 
   Scenario: Guessing a letter that is not in the word
     Given I have started a game with the word "xyzzy"
-    When I guess a letter that is not in the word
+    When I guess the letter "w"
     Then The guess attempt is shown
     Then I am told the letter was not in the word
 
   Scenario: Guessing a letter that has already been guessed
     Given I have started a game with the word "xyzzy"
-    When I guess a letter that I have already attempted
+    And I have guessed the letter "x"
+    When I guess the letter "x"
     Then The guess attempt is shown
     Then I am told I have already tried that letter
     Then The guess result is not shown

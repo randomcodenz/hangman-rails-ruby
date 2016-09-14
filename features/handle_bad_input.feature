@@ -9,12 +9,12 @@ Feature: Handle bad input
 
   Scenario: Guessing a number
     Given I have started a game with the word "xyzzy"
-    When I guess a number (3)
+    When I guess the number "3"
     Then I am told "3" is not a valid guess attempt
     Then The guess result is not shown
 
   Scenario: Guessing a symbol
     Given I have started a game with the word "xyzzy"
-    When I guess a symbol ($)
+    When I guess the symbol "$"
     Then I am told "$" is not a valid guess attempt
     Then The guess result is not shown

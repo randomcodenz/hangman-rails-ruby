@@ -4,20 +4,21 @@ Feature: Deduct a live for an incorrect guess
 
   Scenario: Deduct life for incorrect guess
     Given I have started a game with the word "xyzzy" and 5 lives
-    When I make an incorrect guess ("w")
+    When I guess the letter "w"
     Then I should end up with 4 lives
 
   Scenario: Do not deduct a life for an invalid guess
     Given I have started a game with the word "xyzzy" and 5 lives
-    When I make an invalid guess ("@")
+    When I guess the symbol "@"
     Then I should still have 5 lives
 
   Scenario: Do not deduct a life for a correct guess
     Given I have started a game with the word "xyzzy" and 5 lives
-    When I make a valid guess ("x")
+    When I guess the letter "x"
     Then I should still have 5 lives
 
   Scenario: Do not deduct a life for a duplicate guess
     Given I have started a game with the word "xyzzy" and 5 lives
-    When I make a valid guess ("x") twice
+    And I have guessed the letter "x"
+    When I guess the letter "x"
     Then I should still have 5 lives

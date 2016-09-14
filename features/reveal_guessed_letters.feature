@@ -5,10 +5,10 @@ Feature: Reveal guessed letters
 
   Scenario: Guessing a letter that appears in the word once
     Given I have started a game with the word "Powershop"
-    When I guess "w"
+    When I guess the letter "w"
     Then "w" is revealed in the masked word
 
   Scenario: Guessing a letter that appears in the word twice
     Given I have started a game with the word "Powershop"
-    When I guess "o"
+    When I guess the letter "o"
     Then "o" is revealed in both locations in the word

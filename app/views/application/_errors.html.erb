@@ -1,0 +1,9 @@
+<% unless flash[:error].nil? %>
+  <ul id="errors">
+  <% flash[:error].each do |field, errors| %>
+    <% errors.each do |error_message| %>
+      <li><%= field %> <%= error_message %></li>
+    <% end %>
+  <% end %>
+  </ul>
+<% end %>

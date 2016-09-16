@@ -1,60 +1,9 @@
-<!-- REVIEW: Extract error rendering into a layout -->
-<% unless flash[:error].nil? %>
-  <ul id="errors">
-  <% flash[:error].each do |field, errors| %>
-    <% errors.each do |error_message| %>
-      <li><%= error_message %></li>
-    <% end %>
-  <% end %>
-  </ul>
-<% end %>
-<% unless flash[:guess_attempt].nil? %>
-  <p id="guess-attempt">
-    You guessed '<%= flash[:guess_attempt] %>'
-  </p>
-<% end %>
-<% unless flash[:guess_correct].nil? %>
-  <p id="guess-result">
-    <% if flash[:guess_correct] %>
-      Your guess was correct! The word contains '<%= flash[:guess_attempt] %>'
-    <% else %>
-      Your guess was incorrect! The word does not contain '<%= flash[:guess_attempt] %>'
-    <% end %>
-  </p>
-<% end %>
-<!-- REVIEW: Make a helper that returns content or nil so this can be reduced to a declarative call -->
-<% if @game.incorrect_guesses.any? %>
-  <p>
-    Your previous incorrect guesses: <span id="incorrect-guesses"><%= @game.incorrect_guesses.to_sentence %></span>
-  </p>
-<% end %>
-<% if @game.game_over? %>
-<!-- REVIEW: Extract into game_over partial to increase readability -->
-  <% if @game.game_lost? %>
-    <p id="game-lost">
-      Game over! Unfortunately you have run out of lives and been hung :(<br/>
-      The word was <%= @game.word %>
-    </p>
-  <% elsif @game.game_won? %>
-    <p id="game-won">
-      Game over! You have guessed the word and avoided the hangman's noose :)<br/>
-      The word was <%= @game.word %>
-    </p>
-  <% end %>
-  <%= render 'new_game_form' %>
-<% else %>
-  <p>
-    The word looks like: <span id="masked-word"><%= render_masked_word @game %></span>
-  </p>
-  <p>
-    You have <span id="lives-remaining"><%= @game.calculate_lives_remaining %></span> lives remaining
-  </p>
-  <%= form_for [@game, @game.guesses.build], html: { :id => "guess" } do |f| %>
-    <p>
-      <%= f.label :attempt %>: <%= f.text_field :attempt %>
-    </p>
-    <p>
-      <%= f.submit %>
-    </p>
-  <% end %>
-<% end %>
+<%= render guess_attempt flash[:guess_attempt] %>
+
+<%= render guess_result flash[:guess_correct], flash[:guess_attempt] %>
+
+<%= render incorrect_guesses @game.incorrect_guesses %>
+
+<%= render game_over @game %>
+
+<%= render game_in_progress @game %>

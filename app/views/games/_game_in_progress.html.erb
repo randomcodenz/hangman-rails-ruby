@@ -1,0 +1,14 @@
+<p>
+  The word looks like: <span id="masked-word"><%= render_masked_word @game.masked_letters %></span>
+</p>
+<p>
+  You have <span id="lives-remaining"><%= @game.calculate_lives_remaining %></span> lives remaining
+</p>
+<%= form_for [@game, @game.guesses.build], html: { :id => "guess" } do |f| %>
+  <p>
+    <%= f.label :attempt %>: <%= f.text_field :attempt %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
